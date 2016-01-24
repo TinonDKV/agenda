@@ -1,0 +1,151 @@
+{include="header"}
+
+
+
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation"><a href="{$fsc->url()}"<><span class="glyphicon glyphicon-refresh" aria-hidden="true"></a></li>
+    <li role="presentation" {if condition="!$fsc->editar"} class="active" {/if}><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Listado</a></li>
+    <li role="presentation" ><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Nueva tarea</a></li>
+   {if condition="$fsc->editar"}
+    <li role="presentation"  class="active"><a href="#editar" aria-controls="editar" role="tab" data-toggle="tab">Editar</a></li>
+   {/if}
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content"> 
+      <div role="tabpanel"  class=" tab-pane {if condition="!$fsc->editar"} active {/if}"  id="home"><!--listado-->
+          
+              <div class="table-responsive"><!--Listado-->
+                  <table class="table table-hover">
+                     <thead>
+                         <tr>  
+                      <th class="text-left" width="160">Fecha</th>
+                      <th class="text-left">Tarea</th>
+                      <th class="text-right">Ususario</th>
+                         </tr>
+                     </thead>
+                      {loop="$fsc->listado"}
+                      <tr {if condition="$value->usuario==$fsc->user->nick"} class="bg-success" {else} class="bg-warning" {/if}>
+                          <td class="text-left">
+                              <a href="{$fsc->url()}&id={$value->id}">{$value->fecha}</a>
+                          {if condition="$value->completado"}
+                          <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                          {/if}
+                          </td>
+                          
+                          <td class="text-left">{$value->tarea}</td>
+                          <td class="text-right">{$value->usuario}</td>
+                       </tr>
+                      {/loop}
+                      </table>
+                  
+              </div>
+          
+      </div>
+      <div role="tabpanel" class="tab-pane" id="profile"><!--Nueva tarea-->
+          <form class="form" action="{$fsc->url()}" method="post" >
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-4">
+                  <div class="form-group">
+                      Fecha:
+                      <input type="text" name="fecha" value="{$fsc->today()}" class="form-control datepicker"/>                  </div>
+                  </div>
+                   <div class="col-md-4">
+                  <div class="form-group">
+                      Hora:
+                      <input type="text" name="hora" value="{$fsc->hour()}" class="form-control"/>
+                  </div>
+                  </div>    
+                   <div class="col-md-4">
+                  <div class="form-group">
+                      Usuario:
+                      <select name="usuario" class="form-control">
+                          <option value="Todos">Todos</option>
+                          {loop="$fsc->user->all()"}
+                          <option value="{$value->nick}">{$value->nick}</option>
+                          {/loop}
+                      </select>                 
+                  </div>
+                  </div>    
+              </div>
+               <div class="row">
+                  <div class="col-md-12">
+                  <div class="form-group">
+                      <textarea name="tarea" rows="5" value="" class="form-control"></textarea> 
+                  </div>
+                      <div class="text-right">
+                          <button class="btn btn-sm btn-primary" type="sutmit">
+                          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                              &nbsp Guardar
+                          </button>
+                      </div>
+                  </div>
+               </div>
+          </form> 
+       
+      </div>
+    
+  </div>
+{if condition="$fsc->editar"}<!--editar-->      
+<div role="tabpanel" class="tab-pane active" id="editar">
+<form class="form" action="{$fsc->url()}" method="post" >
+          <div class="container">
+              <h3>Editar Tarea</h3>
+              <div class="row">
+                  <div class="col-md-4">
+                  <div class="form-group">
+                      <input type="hidden" name="modificar" value="{$fsc->editar->id}" />
+                      Fecha:
+                      <input type="text" name="fecha" value="{$fsc->editar->separa_fecha()}" class="form-control datepicker"/>                  </div>
+                  </div>
+                   <div class="col-md-4">
+                  <div class="form-group">
+                      Hora
+                      <input type="text" name="hora" value="{$fsc->editar->separa_hora()}" class="form-control"/>
+                  </div>
+                  </div>    
+                   <div class="col-md-4">
+                  <div class="form-group">
+                      Usuario:
+                      <select name="usuario" class="form-control">
+                          <option value="todos">Todos</option>
+                          {loop="$fsc->user->all()"}
+                          <option value="{$value->nick}" {if condition="$value->nick==$fsc->editar->usuario"} selected="selected"{/if}>{$value->nick}</option>
+                          {/loop}
+                      </select>                 
+                  </div>
+                  </div>    
+              </div>
+               <div class="row">
+                  <div class="col-md-12">
+                  <div class="form-group">
+                      <textarea name="tarea" rows="5" value="" class="form-control">{$fsc->editar->tarea}</textarea> 
+                  </div>
+                      <div class="checkbox">
+                          <label>
+                              <input type="checkbox" name="completado" value="TRUE" {if condition="$fsc->editar->completado"} checked="checked"{/if}></input>
+                              Completado
+                          </label>
+                         
+                      </div>
+                     
+                      <div class="text-right">
+                          <a href="{$fsc->url()}&delete={$fsc->editar->id}" class="btn btn-sm btn-danger">
+                              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                              
+                          </a>
+                          <button class="btn btn-sm btn-primary" type="sutmit">
+                          <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                              &nbsp Guardar
+                          </button>
+                      </div>
+                  </div>
+               </div>
+          </form>
+    </div>
+{/if}
+</div>
+{include="footer"}
