@@ -1,0 +1,35 @@
+Para poder enviar por Telegram las tareas es necesario crearse un bot en telegram y hay que hacerlo desde el móvil escribiendo la direccion
+https://telegram.me/BotFather en el navegador de nuestro móvil a continuacion
+
+nos llegara al móvil un mensage, abrimos telegram y abrimos @BotFather (que acaba de llegar) contestamos con "/start" sin las comillas y nos
+envía una lista de comandos escribimos "/newbot" a continuacion nos pide un nombre le damos un nombre que será el que aparezca en los mensajes
+a continuacion nos pedirá un nombre para el nuevo bot que ha de acabar necesariamente en "bot" (siempre ignorar las comillas) le damos el mismo
+nombre y le añadimos al final "_bot" y a renglón seguido nos dice que ya se ha creado el nuevo bot y nos envía un token que es un chorro de letras y números
+este lo necesitamos así que lo guardamos.
+
+a continuacion tenemos que averiguar el "chat id" para eso tenemos que enviar un mensaje al nuevo bot que ya tenemos en telegram y acto seguido
+vamos a la página:https://api.telegram.org/aquiponemoseltokenquenoshaenviado/getUpdates y buscamos el id del chat que está a continuación de "chat id"
+sólo los números.
+
+con estos datos editamos el config.php que está en la raiz de facturascripts y añadimos estas líneas:
+
+//mi_bot
+define('BOT_TOKEN','Mi token'); ///token del bot
+define('CHAT_ID','el chat id'); ///id del bot
+define('API_URL','https://api.telegram.org/bot'.BOT_TOKEN.'/');
+
+y listo ya nos enviará todas las tareas al telegram así como las modificaciones (puedes cambiarlo en el código está en el agenda_inicio.php)
+
+si quieres que se le envíe a más de uno como es mi caso puedes crear un grupo de la siguiente forma:
+
+primero escribes en tu bot "/setjoingroups" no hay contestación pero te permite añadir tu bot a un grupo, creas un grupo y añades tu bot 
+(si no te sale lo buscas con la lupa escribiendo el nombre) y añades a todos los que quieras que los reciban luego envias un mensaje al grupo 
+donde esta el bot y luego refrescas la página que te dije anteriormente (https://api.telegram.org/aquiponemoseltokenquenoshaenviado/getUpdates)
+y buscas el id chat del grupo (a mí me empieza por un signo menos (-)) lo cambias en el config.php y voalá todos recibirán los mensajes, por eso 
+he añadido el nombre se usuario al mensaje para que cada cual sepa a quién va dirigido.
+
+espero que os sirva
+
+Un saludo.
+
+TinonDKV 

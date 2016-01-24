@@ -70,8 +70,6 @@ class agenda_inicio extends fs_controller
                 }  
          }
         }
-        
-        
         else if (isset($_POST['fecha']))///nueva tarea
             {
             $this->tarea_agenda->fecha = $_POST['fecha'].' '.$_POST['hora'];

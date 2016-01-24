@@ -145,6 +145,5 @@ public function __construct($t = FALSE)
         $data = explode(' ',$this->fecha);
         return $data[1];       
     }
-             
-
+   
 }
